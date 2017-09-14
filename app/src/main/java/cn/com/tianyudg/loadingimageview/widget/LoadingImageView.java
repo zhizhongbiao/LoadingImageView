@@ -30,7 +30,7 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
 
     private RectF mBorder;
 
-    private int mColor=Color.parseColor("#3d383938");
+    private int mColor=Color.parseColor("#3d232323");
     private int mTextColor=Color.BLACK;
     private float mStrokeWidth=15f;
     private float mTextSize=40f;
