@@ -33,9 +33,28 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
 //    private int mColor=Color.parseColor("#00999999");
     private int mColor=Color.RED;
     private int mTextColor=Color.BLACK;
-    private float mStrokeWidth=30f;
-    private float mTextSize=60f;
+    private float mStrokeWidth=15f;
+    private float mTextSize=40f;
 
+    public void setmRadius(int mRadius) {
+        this.mRadius = mRadius;
+    }
+
+    public void setmColor(int mColor) {
+        this.mColor = mColor;
+    }
+
+    public void setmTextColor(int mTextColor) {
+        this.mTextColor = mTextColor;
+    }
+
+    public void setmStrokeWidth(float mStrokeWidth) {
+        this.mStrokeWidth = mStrokeWidth;
+    }
+
+    public void setmTextSize(float mTextSize) {
+        this.mTextSize = mTextSize;
+    }
 
     public void setProgress(float progress) {
         this.progress = progress;
