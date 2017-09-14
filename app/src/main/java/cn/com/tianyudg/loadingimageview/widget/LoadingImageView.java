@@ -29,11 +29,12 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
     private Paint mTextPaint;
 
     private RectF mBorder;
-    
-    private int mColor=Color.parseColor("#00999999");
+
+//    private int mColor=Color.parseColor("#00999999");
+    private int mColor=Color.RED;
     private int mTextColor=Color.BLACK;
-    private float mStrokeWidth=20f;
-    private float mTextSize=30f;
+    private float mStrokeWidth=30f;
+    private float mTextSize=60f;
 
 
     public void setProgress(float progress) {
@@ -79,32 +80,80 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
 
     }
 
+    /**
+     * 第一顺序执行,能获取child实例,但无法获取宽高,
+     * getHeight()和getWidth()和getMeasuredHeight()和getMeasuredWidth()都不能获取到;
+     */
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
     }
 
 
+    /**
+     * 初始化时候,第二顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
+     * 不能获取getHeight()和getWidth();
+     * 该方法有可能被多次执行,在非初始化时候,也能获取getHeight()和getWidth();
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    /**
+     *
+     * 初始化时候,第三顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
+     * 不能获取getHeight()和getWidth();
+     * 该方法有可能被多次执行,在非初始化时候,也能获取getHeight()和getWidth();
+     * @param w
+     * @param h
+     * @param oldw
+     * @param oldh
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
+    /**
+     * 初始化时候,第三顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
+     * 也能获取getHeight()和getWidth(),该方法有可能被多次执行;
+     *
+     * @param changed
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         getViewTreeObserver().addOnGlobalLayoutListener(this);
     }
 
+    /**
+     * 初始化时候,第四顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
+     * 也能获取getHeight()和getWidth(),该方法有可能跟随onLayout(boolean changed, int left, int top, int right, int bottom)方法被多次执行;
+     */
     @Override
     public void onGlobalLayout() {
         initParams();
     }
+
+
+    /**
+     *  初始化时候,第五顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
+     * 也能获取getHeight()和getWidth();
+     *
+     * @param hasWindowFocus
+     */
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+    }
+
 
     private void initParams() {
         mWidth = getWidth();
@@ -117,11 +166,6 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
         Log.e(TAG, "onGlobalLayout: mRadius=" + mRadius);
     }
 
-
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
