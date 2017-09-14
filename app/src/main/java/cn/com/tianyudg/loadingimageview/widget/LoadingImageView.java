@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -29,11 +30,12 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
     private Paint mTextPaint;
 
     private RectF mBorder;
+    private Rect mTextRect;
 
-    private int mColor=Color.parseColor("#3d232323");
-    private int mTextColor=Color.BLACK;
-    private float mStrokeWidth=15f;
-    private float mTextSize=40f;
+    private int mColor = Color.parseColor("#3d232323");
+    private int mTextColor = Color.BLACK;
+    private float mStrokeWidth = 15f;
+    private float mTextSize = 40f;
 
     public void setmRadius(int mRadius) {
         this.mRadius = mRadius;
@@ -62,17 +64,17 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
     }
 
     public LoadingImageView(Context context) {
-        this(context,null);
+        this(context, null);
 //        initPaint();
     }
 
     public LoadingImageView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
 //        initPaint();
     }
 
     public LoadingImageView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr,0);
+        this(context, attrs, defStyleAttr, 0);
 //        initPaint();
     }
 
@@ -112,6 +114,7 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
      * 初始化时候,第二顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
      * 不能获取getHeight()和getWidth();
      * 该方法有可能被多次执行,在非初始化时候,也能获取getHeight()和getWidth();
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -121,10 +124,10 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
     }
 
     /**
-     *
      * 初始化时候,第三顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
      * 不能获取getHeight()和getWidth();
      * 该方法有可能被多次执行,在非初始化时候,也能获取getHeight()和getWidth();
+     *
      * @param w
      * @param h
      * @param oldw
@@ -162,7 +165,7 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
 
 
     /**
-     *  初始化时候,第五顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
+     * 初始化时候,第五顺序执行,能获取child实例和getMeasuredHeight()和getMeasuredWidth(),
      * 也能获取getHeight()和getWidth();
      *
      * @param hasWindowFocus
@@ -174,12 +177,13 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
 
 
     private void initParams() {
+        mTextRect = new Rect();
         mWidth = getWidth();
         mHeight = getHeight();
         if (mHeight == 0 || mWidth == 0) return;
         xCenter = mWidth / 2;
         yCenter = mHeight / 2;
-        mRadius = (mHeight > mWidth ? mWidth / 2 : mHeight / 2)-20;
+        mRadius = (mHeight > mWidth ? mWidth / 2 : mHeight / 2) - 5;
         mBorder = new RectF(xCenter - mRadius, yCenter - mRadius, xCenter + mRadius, yCenter + mRadius);
         Log.e(TAG, "onGlobalLayout: mRadius=" + mRadius);
     }
@@ -188,14 +192,18 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mRadius == 0 || progress >= 1) {
+        if (mRadius == 0 || progress >= 1 || progress <= 0) {
             return;
         }
 
         canvas.drawArc(mBorder, 0, 360 * progress, true, mPaint);
-        String text = Math.round(progress * 100) + "%";
+        String text = "正在上传" + Math.round(progress * 100) + "%";
+
+//        mTextPaint.getTextBounds(text, 0, text == null ? 0 : text.length(), mTextRect);
+        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
+        float textHeight = (fontMetrics.bottom - fontMetrics.top) / 2;
         float textWidth = mTextPaint.measureText(text);
-        canvas.drawText(text, xCenter - (textWidth / 2), yCenter, mTextPaint);
+        canvas.drawText(text, xCenter - (textWidth / 2), yCenter + (textHeight / 2), mTextPaint);
 
     }
 
