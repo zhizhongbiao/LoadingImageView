@@ -95,7 +95,7 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
         mPaint.setStrokeWidth(mStrokeWidth);
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaint.setStyle(Paint.Style.FILL);
 
     }
 
