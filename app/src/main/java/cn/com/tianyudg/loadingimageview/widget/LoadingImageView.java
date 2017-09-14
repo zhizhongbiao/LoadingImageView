@@ -180,7 +180,7 @@ public class LoadingImageView extends ImageView implements ViewTreeObserver.OnGl
         if (mHeight == 0 || mWidth == 0) return;
         xCenter = mWidth / 2;
         yCenter = mHeight / 2;
-        mRadius = mHeight > mWidth ? mWidth / 3 : mHeight / 3;
+        mRadius = (mHeight > mWidth ? mWidth / 2 : mHeight / 2)-20;
         mBorder = new RectF(xCenter - mRadius, yCenter - mRadius, xCenter + mRadius, yCenter + mRadius);
         Log.e(TAG, "onGlobalLayout: mRadius=" + mRadius);
     }
